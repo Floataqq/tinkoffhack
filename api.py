@@ -19,5 +19,5 @@ async def get_partner_data(id: int):
 
 @app.put('/api/partners/{id}/cashback')
 async def update_partner_data(id: int, date: str, name: str, chashback: float):
-    db.add_user_entry(id, {"date": date, "value": value})
+    db.add_partner_entry(id, {"date": date, "value": value})
 

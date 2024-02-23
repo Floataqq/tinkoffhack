@@ -36,7 +36,7 @@ def get_partner(id: str) -> dict:
         "is_stopped": res["is_stopped"]
     }
         
-def add_user_entry(o_id: str, entry: dict):
+def add_partner_entry(o_id: str, entry: dict):
     data_store.update_one(
         {'_id': ObjectId(o_id)},
         {'$push': {
