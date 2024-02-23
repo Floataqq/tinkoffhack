@@ -14,10 +14,10 @@ async def new_partner(name: str, budget: int):
     }
 
 @app.get('/api/partners/{id}')
-async def get(id: int):
+async def get_partner_data(id: int):
     return db.get_partner(id)
 
 @app.put('/api/partners/{id}/cashback')
-async def update(id: int, date: str, name: str, chashback: float):
+async def update_partner_data(id: int, date: str, name: str, chashback: float):
     db.add_user_entry(id, {"date": date, "value": value})
 
