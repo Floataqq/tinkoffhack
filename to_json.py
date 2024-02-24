@@ -34,10 +34,18 @@ for i in m.iterrows():
     if type(thing['day']) is str:
         name = thing['merchant_name']
         time = (datetime.strptime(thing['day'], date_format) - datetime.strptime("1/1/2022", "%m/%d/%Y")).days
-        if time >= 365 and name in c_m:
+        if name in c_m:
             res[c_m[name]][name].append([thing['cashback'], float(time)])
-    else:
-        print(thing)
+
+for cat in res:
+    for com in res[cat]:
+        try:
+            maximum = max(map(lambda x: x[1], res[cat][com]))
+            res[cat][com] = list(
+                filter(lambda x: x[1] >= maximum - 30, res[cat][com])
+            )
+        except:
+            pass
 
 dump(res, open('res.json', 'w+'))
 
