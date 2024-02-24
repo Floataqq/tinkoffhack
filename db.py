@@ -1,13 +1,13 @@
 from bson.objectid import ObjectId
+from typing import List, Optional
 from pymongo import MongoClient
-from typing import List
 from anal import run
 
 client = MongoClient('mongodb://localhost:27017')
 db = client.dbass
 data_store = db.partners
 
-def add_partner(name: str, budget: int) -> str:
+def add_partner(name: str, budget: int, category: Optional[str]) -> str:
     empty: List[dict] = []
     return {
         "id" : str(
@@ -18,6 +18,7 @@ def add_partner(name: str, budget: int) -> str:
                     "spent_budget": 0,
                     "cashbacks": empty,
                     "is_stopped": False,
+                    "category": category,
                 }
             ).inserted_id
         ),

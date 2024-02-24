@@ -1,7 +1,9 @@
-from models import NewPartner, Partner, Nothing
 from fastapi import FastAPI, HTTPException, APIRouter
+from models import NewPartner, Partner, Nothing
 from fastapi.responses import HTMLResponse
+from anal import run, Category
 from datetime import datetime
+from typing import Optional
 import json
 import db
 
@@ -14,9 +16,9 @@ app = FastAPI(
 router = APIRouter()
 
 @router.post('/api/partners', tags=["Endpoints"], response_model=NewPartner)
-async def new_partner(name: str, budget: int):
+async def new_partner(name: str, budget: int, category: Optional[Category]):
     try:
-        id = db.add_partner(name, budget)
+        id = db.add_partner(name, budget, category)
         return {
             "id": id['id'],
             "name": name,
@@ -36,9 +38,10 @@ async def get_partner_data(id: str):
 @router.put('/api/partners/{id}/cashback', tags=["Endpoints"], 
          response_model=Nothing)
 async def update_partner_data(id: str, date: datetime, name: str, 
-                              chashback: float):
+                              cashback: float):
     try:
-        db.add_partner_entry(id, {"date": date, "value": value})
+        db.add_partner_entry(id, {"date": date, "value": cashback})
+        run(data_store, id, date, value)
     except Exception as e:
         raise HTTPException(500, detail=str(e))
         
