@@ -8,7 +8,7 @@ allowed_categories = [
     'Goods',
     'Groceries',
     'Health',
-    'SkinCare'
+    'SkinCare',
     'Software',
     'Techs',
     'Travel'

@@ -16,7 +16,8 @@ app = FastAPI(
 router = APIRouter()
 
 @router.post('/api/partners', tags=["Endpoints"], response_model=NewPartner)
-async def new_partner(name: str, budget: int, category: Optional[Category]):
+async def new_partner(name: str, budget: int, 
+                      category: Optional[Category] = None):
     try:
         id = db.add_partner(name, budget, category)
         return {
