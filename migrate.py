@@ -15,3 +15,5 @@ for row in df.iterrows():
         date = datetime.strptime(date, '%Y-%m-%d')
         db.add_partner_entry(companies[s[0]], {'date': date, 'value': s[3]})
 
+db.data_store.delete_many({'cashbacks': []})
+
