@@ -1,57 +1,57 @@
-from fastapi.openapi.utils import get_openapi
+from models import NewPartner, Partner, Nothing
+from fastapi import FastAPI, HTTPException, APIRouter
 from fastapi.responses import HTMLResponse
-from fastapi import FastAPI
+from datetime import datetime
 import json
 import db
 
-app = FastAPI()
+app = FastAPI(
+    docs_url="/", 
+    redoc_url=None,
+    title="Pen is pie",
+    version="1.0.0",
+)
+router = APIRouter()
 
-@app.get('/', include_in_schema=False)
-async def root():
-    with open('./static/index.html', 'r') as f:
-        content = f.read()
-    return HTMLResponse(content=content, status_code=200)
-
-@app.get('/ui.json', include_in_schema=False)
-async def ui_json():
-    return json.load(open('static/ui.json', 'r'))
-
-@app.post('/api/partners')
+@router.post('/api/partners', tags=["Endpoints"], response_model=NewPartner)
 async def new_partner(name: str, budget: int):
-    id = db.add_partner(name, budget)
-    return {
-        "id": id,
-        "name": name,
-        "budget": budget,
-        "spent_budget": 0,
-    }
+    try:
+        id = db.add_partner(name, budget)
+        return {
+            "id": id['id'],
+            "name": name,
+            "budget": budget,
+            "spent_budget": 0,
+        }
+    except Exception as e:
+        raise HTTPException(500, detail=str(e))        
 
-@app.get('/api/partners/{id}')
+@router.get('/api/partners/{id}', tags=["Endpoints"], response_model=Partner)
 async def get_partner_data(id: str):
-    return db.get_partner(id)
+    try:
+        return db.get_partner(id)
+    except Exception as e:
+        raise HTTPException(500, detail=str(e))
 
-@app.put('/api/partners/{id}/cashback')
-async def update_partner_data(id: str, date: str, name: str, chashback: float):
-    db.add_partner_entry(id, {"date": date, "value": value})
-
-def custom_openapi():
-    if app.openapi_schema:
-        return app.openapi_schema
-    openapi_schema = get_openapi(
-        title="Pen is pie",
-        version="1.0.0",
-        summary="",
-        description="",
-        routes=app.routes,
-    )
-    '''
-    openapi_schema["info"]["x-logo"] = {
-        "url": "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
+@router.put('/api/partners/{id}/cashback', tags=["Endpoints"], 
+         response_model=Nothing)
+async def update_partner_data(id: str, date: datetime, name: str, 
+                              chashback: float):
+    try:
+        db.add_partner_entry(id, {"date": date, "value": value})
+    except Exception as e:
+        raise HTTPException(500, detail=str(e))
+        
+app.include_router(
+    router,
+    responses = {
+        500: {
+            "content" : {
+                "application/json": {
+                    "example": {"detail": "Could not connect to the database"}
+                }
+            }
+        }
     }
-    '''
-    app.openapi_schema = openapi_schema
-    return app.openapi_schema
-
-
-app.openapi = custom_openapi
+)
 
