@@ -1,10 +1,7 @@
 from fastapi import FastAPI, HTTPException, APIRouter
 from models import NewPartner, Partner, Nothing
-from fastapi.responses import HTMLResponse
 from anal import run, Category
 from datetime import datetime
-from typing import Optional
-import json
 import db
 
 app = FastAPI(
@@ -17,7 +14,7 @@ router = APIRouter()
 
 @router.post('/api/partners', tags=["Endpoints"], response_model=NewPartner)
 async def new_partner(name: str, budget: int, 
-                      category: Optional[Category] = None):
+                      category: Category = None):
     try:
         id = db.add_partner(name, budget, category)
         return {
