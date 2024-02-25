@@ -45,6 +45,12 @@ def add_partner_entry(o_id: str, entry: dict):
             }
          }
     )
-    run(data_store, o_id, entry)
+    obj = data_store.find_one({'_id': ObjectId(o_id)})
+    recent = obj['cashbacks']
+    branch = obj['category'] or None
+    data_store.update_one(
+        {'_id': ObjectId(o_id)},
+        {'is_stopped': run(recent, entry['value'], branch)}
+    )    
 
 
