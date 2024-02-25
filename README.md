@@ -1,6 +1,7 @@
 # tinkoffhack
 
 ### to start the service:
+`# make a venv before launch`
 `pip install -r requirements.txt`
 `uvicorn api:app --reload`
 
