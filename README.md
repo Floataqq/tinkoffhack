@@ -5,7 +5,7 @@
 
 `pip install -r requirements.txt`
 
-`uvicorn api:app --reload`
+`python -m uvicorn api:app --reload`
 
 ### paths:
 GET `/` - ui & docs
