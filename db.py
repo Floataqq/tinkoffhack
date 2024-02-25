@@ -1,7 +1,7 @@
 from bson.objectid import ObjectId
 from typing import List, Optional
 from pymongo import MongoClient
-from anal import run
+from analysis import run
 
 client = MongoClient('mongodb://localhost:27017')
 db = client.dbass

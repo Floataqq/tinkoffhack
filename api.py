@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, APIRouter
 from models import NewPartner, Partner, Nothing
-from anal import run, Category
+from analysis import run, Category
 from datetime import datetime
 import db
 
