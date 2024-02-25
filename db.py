@@ -46,11 +46,15 @@ def add_partner_entry(o_id: str, entry: dict):
          }
     )
     obj = data_store.find_one({'_id': ObjectId(o_id)})
-    recent = obj['cashbacks']
+    recent = [i['value'] for i in obj['cashbacks']]
     branch = obj['category'] or None
+    budget = obj['budget']
     data_store.update_one(
         {'_id': ObjectId(o_id)},
-        {'is_stopped': run(recent, entry['value'], branch)}
+        {'$set': {
+            'is_stopped': run(recent, entry['value'], branch, budget),
+            'spent_budget': obj['spent_budget'] - entry['value']
+        }}
     )    
 
 

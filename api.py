@@ -37,11 +37,11 @@ async def get_partner_data(id: str):
          response_model=Nothing)
 async def update_partner_data(id: str, date: datetime, name: str, 
                               cashback: float):
-    try:
+#    try:
         db.add_partner_entry(id, {"date": date, "value": cashback})
-        run(data_store, id, date, value)
-    except Exception as e:
-        raise HTTPException(500, detail=str(e))
+        return {}
+#    except Exception as e:
+#        raise HTTPException(500, detail=str(e))
         
 app.include_router(
     router,
