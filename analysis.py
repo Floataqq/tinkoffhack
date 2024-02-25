@@ -42,7 +42,8 @@ def algo(cash, branch, y_cashbacks, budget):
 
     predicted_cashback = model.predict(x_new.values.reshape(-1, 1, 1))
 
-    return bool(predicted_cashback[0][0] >= y_norm.iloc[-1])
+    res = (predicted_cashback[0][0] >= y_norm.iloc[-1])
+    return bool(res)
 
 
 def algo_branch(cash, branches, y_cashbacks, budget):
